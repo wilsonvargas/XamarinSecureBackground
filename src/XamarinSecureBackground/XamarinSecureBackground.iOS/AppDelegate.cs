@@ -20,13 +20,33 @@ namespace XamarinSecureBackground.iOS
         //
         // You have 17 seconds to return from this method, or iOS will terminate your application.
         //
-
+        UIImageView _imageWindows = null;
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
+        }
+        public override void OnActivated(UIApplication application)
+        {
+            base.OnActivated(application);
+
+            _imageWindows?.RemoveFromSuperview();
+            _imageWindows?.Dispose();
+            _imageWindows = null;
+        }
+
+        public override void OnResignActivation(UIApplication application)
+        {
+            base.OnResignActivation(application);
+
+
+            _imageWindows = new UIImageView(UIImage.FromBundle("Default.png"))
+            {
+                Frame = UIApplication.SharedApplication.KeyWindow.RootViewController.View.Bounds
+            };
+            UIApplication.SharedApplication.KeyWindow.RootViewController.View.AddSubview(_imageWindows);
         }
     }
 }
